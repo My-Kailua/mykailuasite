@@ -1,0 +1,3 @@
+# Preview site: keep search engines out until launch. At launch, change Disallow: / to Allow: /
+User-agent: *
+Disallow: /

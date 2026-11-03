@@ -1,0 +1,183 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Postcard from '../components/Postcard.astro';
+import Signup from '../components/Signup.astro';
+import { site } from '../config/site';
+
+const stories = (await getCollection('stories', ({ data }) => !data.draft))
+  .sort((a, b) => Number(b.data.featured) - Number(a.data.featured) || b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+const partners = (await getCollection('businesses', ({ data }) => !data.draft && data.partner)).slice(0, 4);
+const products = (await getCollection('products', ({ data }) => !data.draft)).slice(0, 3);
+---
+<BaseLayout>
+  <!-- Poster hero -->
+  <section class="wrap hero">
+    <div class="poster postcard">
+      <div class="poster-frame">
+        <picture>
+          <source srcset="/media/photos/palms-mokulua.webp" type="image/webp" />
+          <img
+            class="vintage"
+            src="/media/photos/palms-mokulua.jpg"
+            alt="Palm trees framing the Mokulua islands off Lanikai"
+            fetchpriority="high"
+          />
+        </picture>
+        <h1 class="poster-title">My Kailua</h1>
+      </div>
+      <ul class="places" aria-label="Places on the windward side">
+        {site.places.map((p, i) => <li class={i % 2 ? 'alt' : ''}>{p}</li>)}
+      </ul>
+    </div>
+
+    <div class="intro">
+      <p class="display lede">Your hometown news, stories and shop, with a little <em>old Hawaii</em> in every page.</p>
+      <div class="actions">
+        <a class="btn" href="/windward-weekly/">Get the Windward Weekly</a>
+        <a class="btn btn--ghost" href="/news/">Today's news</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stories -->
+  <section class="section wrap" aria-labelledby="postcards-title">
+    <div class="section-head">
+      <h2 id="postcards-title" class="display">Postcards from this week</h2>
+      <a class="more" href="/stories/">All stories</a>
+    </div>
+    <div class="grid-3">
+      {stories.map((s) => (
+        <Postcard
+          href={`/stories/${s.id}/`}
+          image={s.data.image}
+          imageAlt={s.data.imageAlt}
+          label={s.data.category}
+          title={s.data.title}
+        />
+      ))}
+    </div>
+  </section>
+
+  <!-- Film -->
+  <section class="film" aria-labelledby="film-title">
+    <div class="wrap">
+      <div class="film-head">
+        <p class="eyebrow light">Sunrise to golden hour</p>
+        <h2 id="film-title" class="display">One day on the windward side.</h2>
+      </div>
+      <div class="film-frame">
+        <video
+          class="loop"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          poster="/media/photos/mokulua-sunrise.webp"
+          aria-label="A short film of the windward coast from sunrise at the Mokulua islands to golden hour at Olomana"
+        >
+          <source src="/media/video/kailua-loop-720.mp4" type="video/mp4" media="(max-width: 800px)" />
+          <source src="/media/video/kailua-loop-1080.mp4" type="video/mp4" />
+        </video>
+      </div>
+    </div>
+  </section>
+
+  <!-- Biz Partners -->
+  <section class="section wrap" aria-labelledby="partners-title">
+    <div class="section-head">
+      <h2 id="partners-title" class="display">Our Biz Partners</h2>
+      <a class="more" href="/biz-partners/">See them all</a>
+    </div>
+    <div class="grid-4">
+      {partners.map((b) => (
+        <Postcard href="/biz-partners/" image={b.data.image} imageAlt={b.data.imageAlt} label={b.data.category} title={b.data.name} ratio="1 / 1" />
+      ))}
+    </div>
+  </section>
+
+  <Signup />
+
+  <!-- Shop -->
+  <section class="section wrap" aria-labelledby="shop-title">
+    <div class="section-head">
+      <h2 id="shop-title" class="display">Made in Kailua</h2>
+      <a class="more" href="/shop/">Visit the shop</a>
+    </div>
+    <div class="grid-3">
+      {products.map((p) => (
+        <Postcard href="/shop/" image={p.data.image} imageAlt={p.data.imageAlt} label={p.data.maker} title={p.data.name} meta={p.data.price} />
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero { padding-top: 8px; }
+  .poster { padding: clamp(10px, 1.6vw, 20px); box-shadow: var(--shadow); }
+  .poster-frame { position: relative; overflow: hidden; aspect-ratio: 16 / 10.5; background: #9FCFD8; }
+  .poster-frame img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 100%; }
+  .poster-title {
+    position: absolute;
+    top: clamp(20px, 4vw, 44px);
+    left: clamp(20px, 4vw, 48px);
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(64px, 11vw, 140px);
+    line-height: 0.9;
+    color: var(--paper);
+    text-shadow: 4px 4px 0 var(--teal);
+  }
+  .places {
+    list-style: none;
+    margin: 0;
+    padding: 18px 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .places .alt { color: var(--coral-text); }
+  @media (max-width: 640px) {
+    .poster-frame { aspect-ratio: 4 / 5; }
+    .poster-frame img { object-position: 50% 100%; }
+  }
+
+  .intro {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px 48px;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-top: clamp(40px, 6vw, 64px);
+  }
+  .lede { max-width: 640px; font-size: clamp(30px, 3.8vw, 42px); line-height: 1.15; }
+  .lede em { color: var(--coral-text); }
+  .actions { display: flex; flex-wrap: wrap; gap: 14px; }
+
+  .section-head { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: baseline; justify-content: space-between; margin-bottom: 28px; }
+  .section-head h2 { font-size: clamp(32px, 4vw, 44px); }
+  .more { font-size: 14px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--teal); }
+
+  .film { background: var(--ink); color: var(--paper); padding: clamp(56px, 8vw, 96px) 0; }
+  .light { color: #E8B9A6; }
+  .film-head h2 { margin-top: 10px; font-size: clamp(34px, 5vw, 60px); }
+  .film-frame { margin-top: 32px; border: 2px solid var(--paper); padding: clamp(8px, 1.2vw, 14px); background: #1C1916; }
+  .loop { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: #1C1916; }
+</style>
+
+<script>
+  // Respect visitors who prefer less motion: pause the film and show the still.
+  const video = document.querySelector<HTMLVideoElement>('video.loop');
+  if (video && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    video.removeAttribute('autoplay');
+    video.pause();
+  }
+</script>

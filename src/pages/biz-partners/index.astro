@@ -1,0 +1,13 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import Postcard from '../../components/Postcard.astro';
+const partners = await getCollection('businesses', ({ data }) => !data.draft);
+---
+<BaseLayout title="Biz Partners">
+  <PageHeader eyebrow="Biz Partners" title="Local businesses we love" intro="The windward side businesses that support MyKailua. Want to be featured? Reach out to MyKailua." />
+  <section class="wrap grid-4" style="padding-bottom: 96px">
+    {partners.map((b) => <Postcard href={b.data.website} image={b.data.image} imageAlt={b.data.imageAlt} label={b.data.category} title={b.data.name} meta={b.data.summary} ratio="1 / 1" />)}
+  </section>
+</BaseLayout>

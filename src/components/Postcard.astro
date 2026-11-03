@@ -1,0 +1,30 @@
+---
+// A vintage postcard style card used for stories, businesses and products.
+interface Props {
+  href?: string;
+  image: string;
+  imageAlt: string;
+  label: string;
+  title: string;
+  meta?: string;
+  ratio?: string;
+}
+const { href, image, imageAlt, label, title, meta, ratio = '4 / 3' } = Astro.props;
+const Tag = href ? 'a' : 'div';
+---
+<Tag class="card postcard" href={href}>
+  <img class="vintage" src={image} alt={imageAlt} loading="lazy" decoding="async" style={`aspect-ratio: ${ratio}`} />
+  <p class="eyebrow">{label}</p>
+  <p class="display title">{title}</p>
+  {meta && <p class="meta">{meta}</p>}
+</Tag>
+
+<style>
+  .card { display: block; padding: 14px; text-decoration: none; color: var(--ink); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+  a.card:hover { transform: translate(-3px, -3px); box-shadow: 6px 6px 0 var(--teal); color: var(--ink); }
+  img { width: 100%; object-fit: cover; }
+  .eyebrow { margin-top: 14px; font-size: 12px; }
+  .title { margin-top: 4px; font-size: 24px; }
+  .meta { margin: 6px 0 0; font-size: 15px; color: var(--ink-soft); }
+  @media (prefers-reduced-motion: reduce) { .card { transition: none; } }
+</style>

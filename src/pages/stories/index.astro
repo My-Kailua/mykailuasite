@@ -1,0 +1,13 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import Postcard from '../../components/Postcard.astro';
+const stories = (await getCollection('stories', ({ data }) => !data.draft)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+<BaseLayout title="Stories">
+  <PageHeader eyebrow="Stories" title="Life on the windward side" intro="People, places and moments from Kailua, Lanikai and the east side of Oahu." />
+  <section class="wrap grid-3" style="padding-bottom: 96px">
+    {stories.map((s) => <Postcard href={`/stories/${s.id}/`} image={s.data.image} imageAlt={s.data.imageAlt} label={s.data.category} title={s.data.title} meta={s.data.summary} />)}
+  </section>
+</BaseLayout>

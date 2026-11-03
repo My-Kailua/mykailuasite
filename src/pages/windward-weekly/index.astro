@@ -1,0 +1,27 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import Signup from '../../components/Signup.astro';
+const issues = (await getCollection('weekly', ({ data }) => !data.draft)).sort((a, b) => b.data.issue - a.data.issue);
+---
+<BaseLayout title="Windward Weekly">
+  <PageHeader eyebrow="The newsletter" title="The Windward Weekly" intro="Every week, the best of Kailua and the windward side in your inbox." />
+  <Signup />
+  <section class="wrap section">
+    <h2 class="display" style="font-size: 40px; margin-bottom: 24px">Past issues</h2>
+    <ul class="issues">
+      {issues.map((i) => (
+        <li class="postcard">
+          <p class="eyebrow">Issue {i.data.issue}</p>
+          <p class="display" style="font-size: 26px; margin-top: 6px">{i.data.beehiivUrl ? <a href={i.data.beehiivUrl}>{i.data.title}</a> : i.data.title}</p>
+          <p style="margin: 6px 0 0">{i.data.summary}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>
+<style>
+  .issues { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+  .issues li { padding: 22px 24px; }
+</style>

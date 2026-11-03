@@ -1,0 +1,17 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import Postcard from '../../components/Postcard.astro';
+const news = (await getCollection('stories', ({ data }) => !data.draft && data.category === 'News')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+<BaseLayout title="News">
+  <PageHeader eyebrow="News" title="What's happening in Kailua" intro="Daily news and updates from the windward side." />
+  <section class="wrap" style="padding-bottom: 96px">
+    {news.length ? (
+      <div class="grid-3">{news.map((s) => <Postcard href={`/stories/${s.id}/`} image={s.data.image} imageAlt={s.data.imageAlt} label="News" title={s.data.title} meta={s.data.summary} />)}</div>
+    ) : (
+      <p class="display" style="font-size: 30px">News stories will appear here. Add a story with the category News.</p>
+    )}
+  </section>
+</BaseLayout>

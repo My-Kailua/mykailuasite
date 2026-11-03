@@ -1,0 +1,31 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Signup from '../../components/Signup.astro';
+
+export async function getStaticPaths() {
+  const stories = await getCollection('stories', ({ data }) => !data.draft);
+  return stories.map((story) => ({ params: { id: story.id }, props: { story } }));
+}
+const { story } = Astro.props;
+const { Content } = await render(story);
+const date = story.data.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'Pacific/Honolulu' });
+---
+<BaseLayout title={story.data.title} description={story.data.summary} image={story.data.image}>
+  <article class="wrap story">
+    <p class="eyebrow">{story.data.category}</p>
+    <h1 class="display">{story.data.title}</h1>
+    <p class="byline">By {story.data.author}, {date}</p>
+    <div class="postcard frame"><img class="vintage" src={story.data.image} alt={story.data.imageAlt} /></div>
+    <div class="body"><Content /></div>
+  </article>
+  <Signup />
+</BaseLayout>
+<style>
+  .story { padding-top: 32px; padding-bottom: 80px; max-width: 900px; }
+  h1 { margin-top: 10px; font-size: clamp(40px, 6vw, 72px); line-height: 1.05; }
+  .byline { color: var(--ink-soft); margin: 16px 0 32px; }
+  .frame { padding: 14px; box-shadow: var(--shadow); margin-bottom: 40px; }
+  .frame img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+  .body { font-size: 19px; line-height: 1.75; max-width: 680px; }
+</style>

@@ -1,0 +1,13 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import Postcard from '../../components/Postcard.astro';
+const products = await getCollection('products', ({ data }) => !data.draft);
+---
+<BaseLayout title="Shop">
+  <PageHeader eyebrow="Shop local" title="Made in Kailua" intro="Goods from MyKailua and the people who live here." />
+  <section class="wrap grid-3" style="padding-bottom: 96px">
+    {products.map((p) => <Postcard href={p.data.shopifyUrl} image={p.data.image} imageAlt={p.data.imageAlt} label={p.data.maker} title={p.data.name} meta={p.data.price} />)}
+  </section>
+</BaseLayout>
