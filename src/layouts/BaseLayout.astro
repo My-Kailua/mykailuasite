@@ -40,5 +40,15 @@ const ogImage = new URL(image, Astro.site).toString();
       <slot />
     </main>
     <Footer />
+    <script>
+      // Site rule: links to other websites always open in a new tab, so visitors never leave My Kailua.
+      document.querySelectorAll<HTMLAnchorElement>('a[href]').forEach((a) => {
+        const url = new URL(a.href, location.href);
+        if (url.protocol.startsWith('http') && url.host !== location.host) {
+          a.target = '_blank';
+          a.rel = 'noopener';
+        }
+      });
+    </script>
   </body>
 </html>

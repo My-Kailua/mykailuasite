@@ -1,16 +1,18 @@
 ---
-// Windward Weekly signup. When the beehiiv link is set in src/config/site.ts the button goes there.
+// Windward Weekly signup. The button opens the beehiiv subscribe page in a new tab.
 import { site } from '../config/site';
-const href = site.beehiivSubscribeUrl || '/windward-weekly/';
 ---
 <section class="signup" aria-labelledby="signup-title">
   <div class="wrap inner">
     <div>
       <p class="eyebrow light">Free, every week</p>
       <h2 id="signup-title" class="display">The Windward Weekly, delivered to your inbox.</h2>
-      <p class="copy">The best of the week from Kailua, Lanikai and the windward side, in one easy read.</p>
+      <p class="copy">A free weekly guide to family life, events, food and things to do around Kailua and windward Oʻahu.</p>
     </div>
-    <a class="btn" href={href}>Subscribe free</a>
+    <div class="actions">
+      <a class="btn" href={site.beehiivSubscribeUrl} target="_blank" rel="noopener">Subscribe free<span class="sr-only"> (opens in a new tab)</span></a>
+      <a class="past" href="/windward-weekly/#past-issues">See past issues</a>
+    </div>
   </div>
 </section>
 
@@ -20,6 +22,9 @@ const href = site.beehiivSubscribeUrl || '/windward-weekly/';
   .light { color: #CFE5E2; }
   h2 { margin-top: 10px; font-size: clamp(32px, 4.4vw, 48px); max-width: 680px; }
   .copy { margin: 14px 0 0; max-width: 560px; color: #E3EEEC; }
+  .actions { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
   .btn { background: var(--paper); border-color: var(--paper); color: var(--ink); }
   .btn:hover { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+  .past { color: var(--paper); font-size: 14px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+  .past:hover { color: #FFD9C9; }
 </style>

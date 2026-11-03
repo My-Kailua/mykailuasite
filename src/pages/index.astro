@@ -35,8 +35,8 @@ const products = (await getCollection('products', ({ data }) => !data.draft)).sl
     <div class="intro">
       <p class="display lede">Your hometown news, stories and shop, with a little <em>old Hawaii</em> in every page.</p>
       <div class="actions">
-        <a class="btn" href="/windward-weekly/">Get the Windward Weekly</a>
-        <a class="btn btn--ghost" href="/news/">Today's news</a>
+        <a class="btn" href={site.beehiivSubscribeUrl} target="_blank" rel="noopener">Get the Windward Weekly<span class="sr-only"> (opens in a new tab)</span></a>
+        <a class="btn btn--ghost" href="/windward-weekly/#past-issues">Past issues</a>
       </div>
     </div>
   </section>

@@ -55,6 +55,11 @@ const weekly = defineCollection({
     issue: z.number(),
     date: z.coerce.date(),
     summary: z.string(),
+    image: z.string().optional(),
+    imageAlt: z.string().optional(),
+    // The web version of the issue (windward-weekly repo, hosted on Netlify).
+    webUrl: z.string().optional(),
+    // The email version of the issue on beehiiv.
     beehiivUrl: z.string().optional(),
     draft: z.boolean().default(false),
   }),

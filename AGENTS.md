@@ -18,7 +18,14 @@ Content lives in plain text files. Adding a file adds an item; deleting a file r
 | A story or news post | `src/content/stories/` | `sample-story-one.md` (use category `News` for news) |
 | A Biz Partner | `src/content/businesses/` | `sample-business-one.md` |
 | A shop product | `src/content/products/` | `sample-product-one.md` |
-| A Windward Weekly recap | `src/content/weekly/` | `sample-issue.md` |
+| A Windward Weekly issue | `src/content/weekly/` | `issue-01.md` |
+
+### The Windward Weekly
+
+- Sending and subscribers live on beehiiv: https://theoahuwindwardweekly.beehiiv.com
+- The web version of each issue lives in a separate repository, `brianmoore106-lab/windward-weekly`, served at `https://windwardweekly.netlify.app/issue-NN/`.
+- When a new issue goes out, add `src/content/weekly/issue-NN.md` here with `webUrl` (the Netlify issue page) and `beehiivUrl` (the post link from the beehiiv archive). It then appears on the Windward Weekly page under Past issues.
+- Every Subscribe button uses `beehiivSubscribeUrl` in `src/config/site.ts` and opens in a new tab.
 
 - File names become web addresses. Use lowercase words joined by hyphens, for example `kailua-farmers-market.md`.
 - The fields at the top of each file are checked by `src/content.config.ts`. If the build fails, a field is probably missing or misspelled.
@@ -42,6 +49,10 @@ Menu items, site name, social links, the beehiiv link and the Shopify link are a
 - Photos get the `vintage` class for the soft aged look.
 - Cards use the `Postcard` component in `src/components/`.
 - Keep small text in `--coral-text`, not `--coral`, so it stays readable.
+
+## Links
+
+- Any link to another website must open in a new tab so visitors never leave My Kailua. `src/layouts/BaseLayout.astro` does this automatically for every page, so do not remove that script. When writing a link by hand, also add `target="_blank" rel="noopener"`.
 
 ## Copy style
 

@@ -25,8 +25,9 @@ export const site = {
     youtube: 'https://www.youtube.com/@mykailua',
   },
 
-  // Paste the beehiiv subscribe page or embed URL here when it is ready.
-  beehiivSubscribeUrl: '',
+  // The Windward Weekly on beehiiv. Every Subscribe button opens this in a new tab.
+  beehiivSubscribeUrl: 'https://theoahuwindwardweekly.beehiiv.com/subscribe',
+  beehiivArchiveUrl: 'https://theoahuwindwardweekly.beehiiv.com/archive',
 
   // Paste the Shopify store URL here when it is ready.
   shopUrl: '',
